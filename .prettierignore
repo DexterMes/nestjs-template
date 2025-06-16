@@ -1,0 +1,10 @@
+node_modules
+build
+dist
+
+**/package-lock.json
+
+.env
+.husky
+storage
+**/*.d.ts

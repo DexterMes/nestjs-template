@@ -1,0 +1,13 @@
+{
+  "printWidth": 140,
+  "singleQuote": false,
+  "useTabs": false,
+  "tabWidth": 2,
+  "semi": false,
+  "bracketSpacing": true,
+  "trailingComma": "none",
+  "plugins": ["@ianvs/prettier-plugin-sort-imports", "prettier-plugin-prisma"],
+  "importOrder": ["<BUILT_IN_MODULES>", "", "<THIRD_PARTY_MODULES>", "", "^[.]"],
+  "importOrderParserPlugins": ["typescript", "decorators-legacy"],
+  "endOfLine": "auto"
+}
