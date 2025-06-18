@@ -3,8 +3,10 @@ import { ConfigModule, ConfigService } from "@nestjs/config"
 import { JwtModule } from "@nestjs/jwt"
 import { ThrottlerModule } from "@nestjs/throttler"
 
+import { CloudinaryModule } from "./cloudinary/cloudinary.module"
 import { validate } from "./env.validation"
 import { AuthModule } from "./modules/auth/auth.module"
+import { EventModule } from "./modules/event/event.module"
 import { PrismaModule } from "./prisma/prisma.module"
 
 @Module({
@@ -18,7 +20,9 @@ import { PrismaModule } from "./prisma/prisma.module"
       inject: [ConfigService]
     }),
     PrismaModule,
-    AuthModule
+    CloudinaryModule,
+    AuthModule,
+    EventModule
   ]
 })
 export class AppModule {}

@@ -37,6 +37,18 @@ class EnvironmentVariables {
   @IsString()
   @IsNotEmpty()
   REFRESH_TOKEN_SECRET: string
+
+  @IsString()
+  @IsNotEmpty()
+  CLOUDINARY_CLOUD_NAME: string
+
+  @IsString()
+  @IsNotEmpty()
+  CLOUDINARY_API_KEY: string
+
+  @IsString()
+  @IsNotEmpty()
+  CLOUDINARY_API_SECRET: string
 }
 
 interface AppConfig {
@@ -48,6 +60,7 @@ interface AppConfig {
 interface DbConfig {
   DATABASE_URL: string
 }
+
 interface JwtConfig {
   ACCESS_TOKEN_EXPIRES: string
   ACCESS_TOKEN_SECRET: string
@@ -55,10 +68,17 @@ interface JwtConfig {
   REFRESH_TOKEN_SECRET: string
 }
 
+interface CloudinaryConfig {
+  CLOUDINARY_CLOUD_NAME: string
+  CLOUDINARY_API_KEY: string
+  CLOUDINARY_API_SECRET: string
+}
+
 export interface IAppConfigurations {
   appConfig: AppConfig
   dbConfig: DbConfig
   jwtConfig: JwtConfig
+  cloudinaryConfig: CloudinaryConfig
 }
 
 export function validate(config: Record<string, unknown>): IAppConfigurations {
@@ -74,8 +94,19 @@ export function validate(config: Record<string, unknown>): IAppConfigurations {
     throw new Error(errors.toString())
   }
 
-  const { PORT, NODE_ENV, APP_URL, DATABASE_URL, ACCESS_TOKEN_EXPIRES, ACCESS_TOKEN_SECRET, REFRESH_TOKEN_EXPIRES, REFRESH_TOKEN_SECRET } =
-    validatedConfig
+  const {
+    PORT,
+    NODE_ENV,
+    APP_URL,
+    DATABASE_URL,
+    ACCESS_TOKEN_EXPIRES,
+    ACCESS_TOKEN_SECRET,
+    REFRESH_TOKEN_EXPIRES,
+    REFRESH_TOKEN_SECRET,
+    CLOUDINARY_CLOUD_NAME,
+    CLOUDINARY_API_KEY,
+    CLOUDINARY_API_SECRET
+  } = validatedConfig
 
   return {
     appConfig: {
@@ -91,6 +122,11 @@ export function validate(config: Record<string, unknown>): IAppConfigurations {
       ACCESS_TOKEN_SECRET,
       REFRESH_TOKEN_EXPIRES,
       REFRESH_TOKEN_SECRET
+    },
+    cloudinaryConfig: {
+      CLOUDINARY_CLOUD_NAME,
+      CLOUDINARY_API_KEY,
+      CLOUDINARY_API_SECRET
     }
   }
 }
