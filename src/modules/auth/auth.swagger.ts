@@ -2,6 +2,22 @@ import { ApiBody, ApiOperation, ApiResponse } from "@nestjs/swagger"
 
 import { USER_ERROR_MESSAGE, USER_SUCCESS_MESSAGE } from "./auth.constant"
 
+const exampleUserData = {
+  id: "user-id",
+  email: "user@example.com",
+  firstName: "John",
+  lastName: "Doe",
+  contact: "9876543210",
+  batch: 2024,
+  department: "Computer Science",
+  semester: 8,
+  verified: true,
+  avatarURL: "https://example.com/avatar.jpg",
+  googleId: "google-oauth-id",
+  accessToken: "<jwt_access_token>",
+  refreshToken: "<jwt_refresh_token>"
+}
+
 export const loginDocs = {
   operation: ApiOperation({
     summary: "User login",
@@ -24,14 +40,7 @@ export const loginDocs = {
         example: {
           success: true,
           message: USER_SUCCESS_MESSAGE.SUCCESS_ON_LOGIN,
-          data: {
-            id: "user-id",
-            email: "user@example.com",
-            firstName: "John",
-            lastName: "Doe",
-            accessToken: "<jwt_access_token>",
-            refreshToken: "<jwt_refresh_token>"
-          }
+          data: exampleUserData
         }
       }
     }),
@@ -41,7 +50,6 @@ export const loginDocs = {
     })
   }
 }
-
 export const registerDocs = {
   operation: ApiOperation({
     summary: "User registration",
@@ -54,7 +62,11 @@ export const registerDocs = {
         firstName: "John",
         lastName: "Doe",
         email: "user@example.com",
-        password: "your_secure_password"
+        password: "your_secure_password",
+        contact: "9876543210",
+        batch: 2024,
+        department: "Computer Science",
+        semester: 8
       }
     }
   }),
@@ -66,14 +78,7 @@ export const registerDocs = {
         example: {
           success: true,
           message: USER_SUCCESS_MESSAGE.SUCCESS_ON_REGISTRATION,
-          data: {
-            id: "user-id",
-            email: "user@example.com",
-            firstName: "John",
-            lastName: "Doe",
-            accessToken: "<jwt_access_token>",
-            refreshToken: "<jwt_refresh_token>"
-          }
+          data: exampleUserData
         }
       }
     }),
@@ -83,7 +88,6 @@ export const registerDocs = {
     })
   }
 }
-
 export const refreshDocs = {
   operation: ApiOperation({
     summary: "Refresh tokens",
@@ -105,14 +109,7 @@ export const refreshDocs = {
         example: {
           success: true,
           message: USER_SUCCESS_MESSAGE.TOKEN_REFRESH,
-          data: {
-            id: "user-id",
-            email: "user@example.com",
-            firstName: "John",
-            lastName: "Doe",
-            accessToken: "<new_access_token>",
-            refreshToken: "<new_refresh_token>"
-          }
+          data: exampleUserData
         }
       }
     }),

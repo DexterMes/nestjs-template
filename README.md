@@ -59,8 +59,6 @@ src/
 - Package manager: `pnpm`, `yarn`, or `npm`
 - A running PostgreSQL database instance
 
----
-
 ### Setup
 
 1. **Clone the repository**

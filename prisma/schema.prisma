@@ -8,9 +8,48 @@ generator client {
 }
 
 model User {
-  id        String @id @unique @default(uuid())
-  firstName String
-  lastName  String
-  email     String @unique
-  password  String
+  id         String  @id @unique @default(uuid())
+  email      String  @unique
+  firstName  String
+  lastName   String
+  password   String
+  contact    String
+  batch      Int
+  department String
+  semester   Int
+  verified   Boolean @default(true)
+  avatarURL  String?
+  googleId   String? @unique
+
+  Ticket Ticket[]
+}
+
+model Event {
+  id          String   @id @unique @default(uuid())
+  title       String
+  description String
+  contact     String
+  date        DateTime
+  venue       String
+  banner      String
+  timeSlot    String
+  category    String
+  images      String[]
+  files       String[]
+  capacity    Int?
+  department  String?
+  club        String?
+
+  Ticket Ticket[]
+}
+
+model Ticket {
+  id      String @id @unique @default(uuid())
+  userId  String
+  eventId String
+  amount  Int
+  contact String
+
+  User  User  @relation(fields: [userId], references: [id])
+  Event Event @relation(fields: [eventId], references: [id])
 }
