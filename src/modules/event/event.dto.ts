@@ -1,60 +1,60 @@
 import { IsArray, IsDateString, IsInt, IsNotEmpty, IsOptional, IsString, Matches } from "class-validator"
 
 export class EventBodyDto {
-  @IsString()
-  @IsNotEmpty()
+  @IsString({ message: "title must be a string" })
+  @IsNotEmpty({ message: "title is required" })
   title: string
 
-  @IsString()
-  @IsNotEmpty()
+  @IsString({ message: "description must be a string" })
+  @IsNotEmpty({ message: "description is required" })
   description: string
 
-  @IsString()
-  @IsNotEmpty()
+  @IsString({ message: "contact must be a string" })
+  @IsNotEmpty({ message: "contact is required" })
   contact: string
 
-  @IsDateString()
-  @IsNotEmpty()
+  @IsDateString({}, { message: "date must be a valid ISO date string" })
+  @IsNotEmpty({ message: "date is required" })
   date: string
 
-  @IsString()
-  @IsNotEmpty()
+  @IsString({ message: "venue must be a string" })
+  @IsNotEmpty({ message: "venue is required" })
   venue: string
 
-  @IsString()
-  @IsNotEmpty()
+  @IsString({ message: "timeSlot must be a string" })
+  @IsNotEmpty({ message: "timeSlot is required" })
   @Matches(/^([01]\d|2[0-3]):[0-5]\d-([01]\d|2[0-3]):[0-5]\d$/, { message: 'timeSlot must be in 24-hour format "HH:MM-HH:MM"' })
   timeSlot: string
 
-  @IsString()
-  @IsNotEmpty()
+  @IsString({ message: "category must be a string" })
+  @IsNotEmpty({ message: "category is required" })
   category: string
 
   @IsOptional()
-  @IsInt()
+  @IsInt({ message: "capacity must be an integer" })
   capacity?: number
 
   @IsOptional()
-  @IsString()
+  @IsString({ message: "department must be a string" })
   department?: string
 
   @IsOptional()
-  @IsString()
+  @IsString({ message: "club must be a string" })
   club?: string
 }
 
 export class EventDto extends EventBodyDto {
-  @IsString()
-  @IsNotEmpty()
+  @IsString({ message: "banner must be a string" })
+  @IsNotEmpty({ message: "banner is required" })
   banner: string
 
   @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
+  @IsArray({ message: "images must be an array of strings" })
+  @IsString({ each: true, message: "each value in images must be a string" })
   images?: string[]
 
   @IsOptional()
-  @IsArray()
-  @IsString({ each: true })
+  @IsArray({ message: "files must be an array of strings" })
+  @IsString({ each: true, message: "each value in files must be a string" })
   files?: string[]
 }

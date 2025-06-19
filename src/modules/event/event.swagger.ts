@@ -1,119 +1,157 @@
-import { ApiBody, ApiOperation, ApiResponse } from "@nestjs/swagger"
+import { ApiBody, ApiConsumes, ApiOperation, ApiResponse } from "@nestjs/swagger"
 
-const exampleUserData = {
-  id: "user-id",
-  email: "user@example.com",
-  firstName: "John",
-  lastName: "Doe",
+const exampleEvent = {
+  title: "Tech Talk 2025",
+  description: "An exciting tech event featuring industry leaders.",
   contact: "9876543210",
-  batch: 2024,
+  date: "2025-06-20T10:00:00Z",
+  venue: "Auditorium",
+  timeSlot: "10:00-12:00",
+  category: "Seminar",
+  capacity: 150,
   department: "Computer Science",
-  semester: 8,
-  verified: true,
-  avatarURL: "https://example.com/avatar.jpg",
-  googleId: "google-oauth-id",
-  accessToken: "<jwt_access_token>",
-  refreshToken: "<jwt_refresh_token>"
+  club: "Tech Club",
+  images: ["https://example.com/image1.jpg"],
+  files: ["https://example.com/file1.pdf"],
+  banner: "https://example.com/banner.jpg"
 }
 
-export const loginDocs = {
+export const createEventDocs = {
   operation: ApiOperation({
-    summary: "User login",
-    description: "Authenticate a user and return access/refresh tokens."
+    summary: "Create a new event",
+    description: "Uploads banner, optional images/files, and creates a new event."
   }),
+  consumes: ApiConsumes("multipart/form-data"),
   body: ApiBody({
-    description: "Login credentials",
+    description: "Event creation data",
     schema: {
-      example: {
-        email: "user@example.com",
-        password: "your_secure_password"
-      }
-    }
-  }),
-  responses: {
-    success: ApiResponse({
-      status: 200,
-      description: "Login successful.",
-      schema: {
-        example: {
-          success: true,
-          // message: USER_SUCCESS_MESSAGE.SUCCESS_ON_LOGIN,
-          data: exampleUserData
-        }
-      }
-    }),
-    badRequest: ApiResponse({
-      status: 400
-      // description: USER_ERROR_MESSAGE.ERROR_ON_LOGIN
-    })
-  }
-}
-export const registerDocs = {
-  operation: ApiOperation({
-    summary: "User registration",
-    description: "Registers a new user and returns tokens upon success."
-  }),
-  body: ApiBody({
-    description: "Registration data",
-    schema: {
-      example: {
-        firstName: "John",
-        lastName: "Doe",
-        email: "user@example.com",
-        password: "your_secure_password",
-        contact: "9876543210",
-        batch: 2024,
-        department: "Computer Science",
-        semester: 8
+      type: "object",
+      properties: {
+        title: { type: "string" },
+        description: { type: "string" },
+        contact: { type: "string" },
+        date: { type: "string", format: "date-time" },
+        venue: { type: "string" },
+        timeSlot: { type: "string", example: "10:00-12:00" },
+        category: { type: "string" },
+        capacity: { type: "integer", nullable: true },
+        department: { type: "string", nullable: true },
+        club: { type: "string", nullable: true },
+        banner: { type: "string", format: "binary" },
+        images: { type: "array", items: { type: "string", format: "binary" } },
+        files: { type: "array", items: { type: "string", format: "binary" } }
       }
     }
   }),
   responses: {
     success: ApiResponse({
       status: 201,
-      description: "Registration successful.",
+      description: "Event created successfully.",
       schema: {
         example: {
           success: true,
-          // message: USER_SUCCESS_MESSAGE.SUCCESS_ON_REGISTRATION,
-          data: exampleUserData
+          message: "Event created successfully.",
+          data: exampleEvent
         }
       }
     }),
     badRequest: ApiResponse({
-      status: 400
-      // description: USER_ERROR_MESSAGE.USER_ALREADY_EXISTS
+      status: 400,
+      description: "Missing required fields or invalid data."
     })
   }
 }
-export const refreshDocs = {
+
+export const getAllEventsDocs = {
   operation: ApiOperation({
-    summary: "Refresh tokens",
-    description: "Refresh access and refresh tokens using a valid refresh token."
+    summary: "Get all events",
+    description: "Returns a list of all events."
   }),
+  responses: {
+    success: ApiResponse({
+      status: 200,
+      description: "All events fetched successfully.",
+      schema: {
+        example: {
+          success: true,
+          message: "Events fetched successfully.",
+          data: [exampleEvent]
+        }
+      }
+    })
+  }
+}
+
+export const getEventByIdDocs = {
+  operation: ApiOperation({
+    summary: "Get a single event",
+    description: "Returns the details of a specific event by ID."
+  }),
+  responses: {
+    success: ApiResponse({
+      status: 200,
+      description: "Event found successfully.",
+      schema: {
+        example: {
+          success: true,
+          message: "Event found successfully.",
+          data: exampleEvent
+        }
+      }
+    }),
+    notFound: ApiResponse({
+      status: 404,
+      description: "Event not found."
+    })
+  }
+}
+
+export const updateEventDocs = {
+  operation: ApiOperation({
+    summary: "Update an event",
+    description: "Updates event details and manages media files."
+  }),
+  consumes: ApiConsumes("multipart/form-data"),
   body: ApiBody({
-    description: "Refresh token request",
+    description: "Event update data",
     schema: {
-      example: {
-        refreshToken: "<jwt_refresh_token>"
+      type: "object",
+      properties: {
+        title: { type: "string" },
+        description: { type: "string" },
+        contact: { type: "string" },
+        date: { type: "string", format: "date-time" },
+        venue: { type: "string" },
+        timeSlot: { type: "string", example: "10:00-12:00" },
+        category: { type: "string" },
+        capacity: { type: "integer", nullable: true },
+        department: { type: "string", nullable: true },
+        club: { type: "string", nullable: true },
+        banner: { type: "string", format: "binary" },
+        images: { type: "array", items: { type: "string", format: "binary" } },
+        files: { type: "array", items: { type: "string", format: "binary" } }
       }
     }
   }),
   responses: {
     success: ApiResponse({
       status: 200,
-      description: "Tokens refreshed successfully.",
+      description: "Event updated successfully.",
       schema: {
         example: {
           success: true,
-          // message: USER_SUCCESS_MESSAGE.TOKEN_REFRESH,
-          data: exampleUserData
+          message: "Event updated successfully.",
+          data: exampleEvent
         }
       }
     }),
+    notFound: ApiResponse({
+      status: 404,
+      description: "Event not found."
+    }),
     badRequest: ApiResponse({
-      status: 400
-      // description: USER_ERROR_MESSAGE.USER_NOT_FOUND
+      status: 400,
+      description: "Validation failed or file upload limits exceeded."
     })
   }
 }
