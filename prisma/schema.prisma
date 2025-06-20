@@ -22,6 +22,7 @@ model User {
   googleId   String? @unique
 
   Ticket Ticket[]
+  Event  Event[]
 }
 
 model Event {
@@ -39,7 +40,9 @@ model Event {
   capacity    Int?
   department  String?
   club        String?
+  creatorId   String
 
+  User   User     @relation(fields: [creatorId], references: [id])
   Ticket Ticket[]
 }
 
