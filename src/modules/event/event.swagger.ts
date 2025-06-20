@@ -1,5 +1,7 @@
 import { ApiBody, ApiConsumes, ApiOperation, ApiResponse } from "@nestjs/swagger"
 
+import { EVENT_SUCCESS_MESSAGE } from "./event.constant"
+
 const exampleEvent = {
   title: "Tech Talk 2025",
   description: "An exciting tech event featuring industry leaders.",
@@ -50,7 +52,7 @@ export const createEventDocs = {
       schema: {
         example: {
           success: true,
-          message: "Event created successfully.",
+          message: EVENT_SUCCESS_MESSAGE.SUCCESS_ON_CREATE,
           data: exampleEvent
         }
       }
@@ -74,7 +76,7 @@ export const getAllEventsDocs = {
       schema: {
         example: {
           success: true,
-          message: "Events fetched successfully.",
+          message: EVENT_SUCCESS_MESSAGE.SUCCESS_ON_FIND,
           data: [exampleEvent]
         }
       }
@@ -94,7 +96,7 @@ export const getEventByIdDocs = {
       schema: {
         example: {
           success: true,
-          message: "Event found successfully.",
+          message: EVENT_SUCCESS_MESSAGE.SUCCESS_ON_FINDONE,
           data: exampleEvent
         }
       }
@@ -102,6 +104,26 @@ export const getEventByIdDocs = {
     notFound: ApiResponse({
       status: 404,
       description: "Event not found."
+    })
+  }
+}
+
+export const getAllMyEventsDocs = {
+  operation: ApiOperation({
+    summary: "Get all events of creator.",
+    description: "Returns a list of all events of requestor."
+  }),
+  responses: {
+    success: ApiResponse({
+      status: 200,
+      description: "All events fetched successfully.",
+      schema: {
+        example: {
+          success: true,
+          message: EVENT_SUCCESS_MESSAGE.SUCCESS_ON_FIND,
+          data: [exampleEvent]
+        }
+      }
     })
   }
 }
@@ -140,7 +162,7 @@ export const updateEventDocs = {
       schema: {
         example: {
           success: true,
-          message: "Event updated successfully.",
+          message: EVENT_SUCCESS_MESSAGE.SUCCESS_ON_UPDATE,
           data: exampleEvent
         }
       }

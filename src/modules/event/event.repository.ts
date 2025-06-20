@@ -19,6 +19,10 @@ export class EventRepository {
     return this.prisma.event.findUnique({ where: { id } })
   }
 
+  findAllByCreatorId(creatorId: string) {
+    return this.prisma.event.findMany({ where: { creatorId } })
+  }
+
   update(id: string, data: EventDto) {
     return this.prisma.event.update({ where: { id }, data })
   }

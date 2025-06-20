@@ -15,7 +15,7 @@ export class EventController {
 
   @getAllEventsDocs.operation
   @getAllEventsDocs.responses.success
-  @Get()
+  @Get("all")
   async findAll() {
     const response = await this.service.getFindAll()
     return {
@@ -34,6 +34,18 @@ export class EventController {
     return {
       success: true,
       message: EVENT_SUCCESS_MESSAGE.SUCCESS_ON_FINDONE,
+      data: response
+    }
+  }
+
+  @Get()
+  @ApiBearerAuth()
+  @UseGuards(UserGuard)
+  async findMyEvents(@Req() req: Request) {
+    const response = await this.service.getFindAllMyEvents(req.user)
+    return {
+      success: true,
+      message: EVENT_SUCCESS_MESSAGE.SUCCESS_ON_FIND,
       data: response
     }
   }

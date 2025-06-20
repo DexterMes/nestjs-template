@@ -26,6 +26,12 @@ export class EventService {
     return event
   }
 
+  async getFindAllMyEvents(id: string) {
+    const event = await this.repository.findAllByCreatorId(id)
+    if (!event) throw new NotFoundError()
+    return event
+  }
+
   async postCreate(
     userId: string,
     payload: EventBodyDto,
