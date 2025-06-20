@@ -7,6 +7,7 @@ import { CloudinaryModule } from "./cloudinary/cloudinary.module"
 import { validate } from "./env.validation"
 import { AuthModule } from "./modules/auth/auth.module"
 import { EventModule } from "./modules/event/event.module"
+import { UserModule } from "./modules/user/user.module"
 import { PrismaModule } from "./prisma/prisma.module"
 
 @Module({
@@ -22,7 +23,8 @@ import { PrismaModule } from "./prisma/prisma.module"
     PrismaModule,
     CloudinaryModule,
     AuthModule,
-    EventModule
+    EventModule,
+    UserModule
   ]
 })
 export class AppModule {}

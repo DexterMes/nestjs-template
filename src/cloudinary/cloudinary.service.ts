@@ -19,16 +19,18 @@ export class CloudinaryService implements OnModuleInit {
     const parts = url.split("/")
     const fileWithExt = parts.pop()
     const fileName = fileWithExt?.split(".")[0]
+    console.log("Deleting Cloudinary public ID:", `${folder}/${fileName}`)
     return `${folder}/${fileName}`
   }
 
   async upload(file: Express.Multer.File, folder: string): Promise<string> {
     return new Promise((resolve, reject) => {
-      const upload = cloudinary.uploader.upload_stream({ folder }, (error, result) => {
-        if (error) return reject(error)
-        resolve(result.secure_url)
-      })
-      toStream(file.buffer).pipe(upload)
+      toStream(file.buffer).pipe(
+        cloudinary.uploader.upload_stream({ folder }, (error, result) => {
+          if (error) return reject(error)
+          resolve(result.secure_url)
+        })
+      )
     })
   }
 
