@@ -7,7 +7,7 @@ import { UserGuard } from "src/guards/user.guard"
 import { EVENT_SUCCESS_MESSAGE } from "./event.constant"
 import { EventBodyDto, EventDto } from "./event.dto"
 import { EventService } from "./event.service"
-import { createEventDocs, getAllEventsDocs, getEventByIdDocs, updateEventDocs } from "./event.swagger"
+import { createEventDocs, getAllEventsDocs, getAllMyEventsDocs, getEventByIdDocs, updateEventDocs } from "./event.swagger"
 
 @Controller("event")
 export class EventController {
@@ -38,6 +38,8 @@ export class EventController {
     }
   }
 
+  @getAllMyEventsDocs.operation
+  @getAllMyEventsDocs.responses.success
   @Get()
   @ApiBearerAuth()
   @UseGuards(UserGuard)

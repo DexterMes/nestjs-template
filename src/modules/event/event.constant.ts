@@ -8,5 +8,6 @@ export const EVENT_SUCCESS_MESSAGE = {
 export const EVENT_ERROR_MESSAGE = {
   BANNER_MISSING: "banner image is missing.",
   IMAGES_EXCEEDED_LIMIT: "Total number of images cannot exceed 3.",
-  FILES_EXCEEDED_LIMIT: "Total number of files cannot exceed 3"
+  FILES_EXCEEDED_LIMIT: "Total number of files cannot exceed 3",
+  NOT_FOUND: "Event not found."
 }

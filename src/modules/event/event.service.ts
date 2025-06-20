@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common"
 import { CloudinaryService } from "src/cloudinary/cloudinary.service"
-import { BadRequestError, NotAuthorizedError, NotFoundError } from "src/errors/api-error"
+import { BadRequestError, DatabaseRecordNotFound, NotAuthorizedError } from "src/errors/api-error"
 
 import { UserRepository } from "../user/user.repository"
 import { EVENT_ERROR_MESSAGE } from "./event.constant"
@@ -22,13 +22,13 @@ export class EventService {
 
   async getFindOne(id: string) {
     const event = await this.repository.findById(id)
-    if (!event) throw new NotFoundError()
+    if (!event) throw new DatabaseRecordNotFound(EVENT_ERROR_MESSAGE.NOT_FOUND)
     return event
   }
 
   async getFindAllMyEvents(id: string) {
     const event = await this.repository.findAllByCreatorId(id)
-    if (!event) throw new NotFoundError()
+    if (!event) throw new DatabaseRecordNotFound(EVENT_ERROR_MESSAGE.NOT_FOUND)
     return event
   }
 
@@ -60,7 +60,7 @@ export class EventService {
     if (!user) throw new NotAuthorizedError()
 
     const event = await this.repository.findById(id)
-    if (!event) throw new NotFoundError()
+    if (!event) throw new DatabaseRecordNotFound(EVENT_ERROR_MESSAGE.NOT_FOUND)
 
     if (event.creatorId !== userId) throw new NotAuthorizedError()
 
