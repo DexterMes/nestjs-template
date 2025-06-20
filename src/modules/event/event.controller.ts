@@ -1,5 +1,8 @@
-import { Body, Controller, Get, Param, Patch, Post, UploadedFiles, UseInterceptors } from "@nestjs/common"
+import { Body, Controller, Get, Param, Patch, Post, Req, UploadedFiles, UseGuards, UseInterceptors } from "@nestjs/common"
 import { FileFieldsInterceptor } from "@nestjs/platform-express"
+import { ApiBearerAuth } from "@nestjs/swagger"
+import { Request } from "express"
+import { UserGuard } from "src/guards/user.guard"
 
 import { EVENT_SUCCESS_MESSAGE } from "./event.constant"
 import { EventBodyDto, EventDto } from "./event.dto"
@@ -9,31 +12,6 @@ import { createEventDocs, getAllEventsDocs, getEventByIdDocs, updateEventDocs } 
 @Controller("event")
 export class EventController {
   constructor(private readonly service: EventService) {}
-
-  @createEventDocs.operation
-  @createEventDocs.consumes
-  @createEventDocs.body
-  @createEventDocs.responses.success
-  @createEventDocs.responses.badRequest
-  @Post()
-  @UseInterceptors(
-    FileFieldsInterceptor([
-      { name: "images", maxCount: 3 },
-      { name: "files", maxCount: 3 },
-      { name: "banner", maxCount: 1 }
-    ])
-  )
-  async create(
-    @UploadedFiles() files: { images?: Express.Multer.File[]; files?: Express.Multer.File[]; banner?: Express.Multer.File[] },
-    @Body() payload: EventBodyDto
-  ) {
-    const response = await this.service.postCreate(payload, files)
-    return {
-      success: true,
-      message: EVENT_SUCCESS_MESSAGE.SUCCESS_ON_CREATE,
-      data: response
-    }
-  }
 
   @getAllEventsDocs.operation
   @getAllEventsDocs.responses.success
@@ -60,6 +38,34 @@ export class EventController {
     }
   }
 
+  @createEventDocs.operation
+  @createEventDocs.consumes
+  @createEventDocs.body
+  @createEventDocs.responses.success
+  @createEventDocs.responses.badRequest
+  @Post()
+  @ApiBearerAuth()
+  @UseGuards(UserGuard)
+  @UseInterceptors(
+    FileFieldsInterceptor([
+      { name: "images", maxCount: 3 },
+      { name: "files", maxCount: 3 },
+      { name: "banner", maxCount: 1 }
+    ])
+  )
+  async create(
+    @UploadedFiles() files: { images?: Express.Multer.File[]; files?: Express.Multer.File[]; banner?: Express.Multer.File[] },
+    @Body() payload: EventBodyDto,
+    @Req() req: Request
+  ) {
+    const response = await this.service.postCreate(req.user, payload, files)
+    return {
+      success: true,
+      message: EVENT_SUCCESS_MESSAGE.SUCCESS_ON_CREATE,
+      data: response
+    }
+  }
+
   @updateEventDocs.operation
   @updateEventDocs.consumes
   @updateEventDocs.body
@@ -67,6 +73,8 @@ export class EventController {
   @updateEventDocs.responses.notFound
   @updateEventDocs.responses.badRequest
   @Patch(":id")
+  @ApiBearerAuth()
+  @UseGuards(UserGuard)
   @UseInterceptors(
     FileFieldsInterceptor([
       { name: "images", maxCount: 3 },
@@ -77,12 +85,13 @@ export class EventController {
   async update(
     @UploadedFiles() files: { images?: Express.Multer.File[]; files?: Express.Multer.File[]; banner?: Express.Multer.File[] },
     @Param("id") id: string,
-    @Body() payload: EventDto
+    @Body() payload: EventDto,
+    @Req() req: Request
   ) {
-    const updatedEvent = await this.service.patchUpdate(id, payload, files)
+    const updatedEvent = await this.service.patchUpdate(id, req.user, payload, files)
     return {
       success: true,
-      message: "Event updated successfully",
+      message: EVENT_SUCCESS_MESSAGE.SUCCESS_ON_UPDATE,
       data: updatedEvent
     }
   }

@@ -1,4 +1,4 @@
-import { IsArray, IsDateString, IsInt, IsNotEmpty, IsOptional, IsString, Matches } from "class-validator"
+import { IsArray, IsDateString, IsInt, IsNotEmpty, IsOptional, IsString, IsUUID, Matches } from "class-validator"
 
 export class EventBodyDto {
   @IsString({ message: "title must be a string" })
@@ -47,6 +47,10 @@ export class EventDto extends EventBodyDto {
   @IsString({ message: "banner must be a string" })
   @IsNotEmpty({ message: "banner is required" })
   banner: string
+
+  @IsString({ message: "creatorId must be a string" })
+  @IsNotEmpty({ message: "creatorId is required" })
+  creatorId: string
 
   @IsOptional()
   @IsArray({ message: "images must be an array of strings" })
