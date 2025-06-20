@@ -12,6 +12,6 @@ export class UserRepository {
   }
 
   updateUser(id: string, data: UserDto) {
-    return this.prisma.user.update({ where: { id }, data })
+    return this.prisma.user.update({ omit: { password: true }, where: { id }, data })
   }
 }
